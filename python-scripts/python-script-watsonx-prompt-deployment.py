@@ -16,7 +16,7 @@ credentials = {
 prompt_mgr = PromptTemplateManager(credentials=credentials,
                                    project_id=project_id)
 
-prompt_template = PromptTemplate(name="New Prompt Template from CICD",
+prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                  model_id="ibm/granite-3-3-8b-instruct",
                                  model_params = {GenParams.DECODING_METHOD: "sample"},
                                  description="My example",
@@ -43,7 +43,7 @@ prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prom
 task_credential = client.task_credentials.store("wx task credentials")
 
 meta_props = {
-    client.deployments.ConfigurationMetaNames.NAME: "CICD deployed prompt template",
+    client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct"}
 
