@@ -40,23 +40,40 @@ client.set.default_project(project_id)
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
+# Initialize to None so it is always defined
+existing = None
+
 # 1. List existing task credentials
 existing_credentials = client.task_credentials.list()
 
-# 2. Find credential by name
-existing = None
+# 2. Try to find the credential by name safely
 for cred in existing_credentials:
-    if cred['metadata']['name'] == "wx task credentials":
-        existing = cred
-        break
 
-# 3. Use or create credential
-if existing:
+    # Case 1: cred is a dict (older SDK)
+    if isinstance(cred, dict) and "metadata" in cred:
+        if cred["metadata"].get("name") == "wx task credentials":
+            existing = cred
+            break
+
+    # Case 2: cred is an ID string → fetch details
+    elif isinstance(cred, str):
+        try:
+            details = client.task_credentials.get(cred)
+            if details["metadata"]["name"] == "wx task credentials":
+                existing = details
+                break
+        except Exception:
+            # skip anything that isn't a valid ID
+            pass
+
+# 3. Use existing credential or create a new one
+if existing is not None:
     print("Using existing task credential")
     task_credential = existing
 else:
     print("Creating new task credential")
     task_credential = client.task_credentials.store("wx task credentials")
+
 
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
