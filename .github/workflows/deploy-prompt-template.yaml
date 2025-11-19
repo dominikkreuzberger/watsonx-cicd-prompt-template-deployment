@@ -1,4 +1,4 @@
-name: Test and deploy the agent
+name: Test and deploy prompt template
 
 on:
   push:
