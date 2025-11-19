@@ -3,6 +3,7 @@ from ibm_watsonx_ai.foundation_models.utils.enums import ModelTypes, DecodingMet
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 import os
 
+print("Reading environment variables")
 watsonx_apikey = os.getenv("WATSONX_API_KEY")
 watsonx_url = os.getenv("WATSONX_URL")
 space_id = os.getenv("WATSONX_SPACE_ID")
@@ -30,6 +31,7 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                             "A loan is a debt that is repaid with interest over time."]]
                                 )
 
+print("Store prompt template")
 stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
 
 from ibm_watsonx_ai import APIClient
@@ -40,47 +42,38 @@ client.set.default_project(project_id)
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
-
 TARGET_NAME = "wx task credentials"
 
-# Always define existing first (prevents NameError)
 existing = None
 
-# 1. List all existing credentials
-credentials_list = client.task_credentials.list()
+# 1. List all task credential IDs
+cred_ids = client.task_credentials.list()
 
-# 2. Inspect each returned item safely
-for cred in credentials_list:
+# 2. Expand each credential to read metadata.name
+for cid in cred_ids:
+    try:
+        details = client.task_credentials.get(cid)
 
-    # Case A: Full dict format
-    if isinstance(cred, dict):
-        name = cred.get("metadata", {}).get("name")
+        name = details.get("metadata", {}).get("name", None)
+
         if name == TARGET_NAME:
-            existing = cred
+            print(f"Found existing task credential: {cid}")
+            existing = details
             break
 
-    # Case B: ID string → fetch details
-    if isinstance(cred, str):
-        try:
-            details = client.task_credentials.get(cred)
-            name = details.get("metadata", {}).get("name")
-            if name == TARGET_NAME:
-                existing = details
-                break
-        except Exception:
-            # skip strings that aren’t valid IDs
-            pass
+    except Exception as e:
+        # Ignore invalid IDs or unexpected returns
+        pass
 
-# 3. Use existing or create new one
-if existing is not None:
+# 3. Use existing or create new
+if existing:
     print("Using existing task credential")
     task_credential = existing
 else:
     print("Creating new task credential")
     task_credential = client.task_credentials.store(TARGET_NAME)
 
-
-
+print("Deploy prompt template")
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
