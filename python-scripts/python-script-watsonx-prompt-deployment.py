@@ -40,39 +40,45 @@ client.set.default_project(project_id)
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
-# Initialize to None so it is always defined
+
+TARGET_NAME = "wx task credentials"
+
+# Always define existing first (prevents NameError)
 existing = None
 
-# 1. List existing task credentials
-existing_credentials = client.task_credentials.list()
+# 1. List all existing credentials
+credentials_list = client.task_credentials.list()
 
-# 2. Try to find the credential by name safely
-for cred in existing_credentials:
+# 2. Inspect each returned item safely
+for cred in credentials_list:
 
-    # Case 1: cred is a dict (older SDK)
-    if isinstance(cred, dict) and "metadata" in cred:
-        if cred["metadata"].get("name") == "wx task credentials":
+    # Case A: Full dict format
+    if isinstance(cred, dict):
+        name = cred.get("metadata", {}).get("name")
+        if name == TARGET_NAME:
             existing = cred
             break
 
-    # Case 2: cred is an ID string → fetch details
-    elif isinstance(cred, str):
+    # Case B: ID string → fetch details
+    if isinstance(cred, str):
         try:
             details = client.task_credentials.get(cred)
-            if details["metadata"]["name"] == "wx task credentials":
+            name = details.get("metadata", {}).get("name")
+            if name == TARGET_NAME:
                 existing = details
                 break
         except Exception:
-            # skip anything that isn't a valid ID
+            # skip strings that aren’t valid IDs
             pass
 
-# 3. Use existing credential or create a new one
+# 3. Use existing or create new one
 if existing is not None:
     print("Using existing task credential")
     task_credential = existing
 else:
     print("Creating new task credential")
-    task_credential = client.task_credentials.store("wx task credentials")
+    task_credential = client.task_credentials.store(TARGET_NAME)
+
 
 
 meta_props = {
