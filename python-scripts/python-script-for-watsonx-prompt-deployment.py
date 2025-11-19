@@ -1,12 +1,22 @@
 from ibm_watsonx_ai.foundation_models.prompts import PromptTemplateManager, PromptTemplate
 from ibm_watsonx_ai.foundation_models.utils.enums import ModelTypes, DecodingMethods, PromptTemplateFormats
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
+import os
+
+watsonx_apikey = os.getenv("WATSONX_API_KEY")
+watsonx_url = os.getenv("WATSONX_URL")
+space_id = os.getenv("WATSONX_SPACE_ID")
+project_id = space_id
+credentials = {
+    "apikey": watsonx_apikey,
+    "url": watsonx_url
+}   
 
 prompt_mgr = PromptTemplateManager(credentials=credentials,
                                    project_id=project_id)
 
-prompt_template = PromptTemplate(name="New prompt",
-                                 model_id="ibm/granite-3-3-8b-instruct,
+prompt_template = PromptTemplate(name="New prompt from cicd",
+                                 model_id="ibm/granite-3-3-8b-instruct",
                                  model_params = {GenParams.DECODING_METHOD: "sample"},
                                  description="My example",
                                  task_ids=["generation"],

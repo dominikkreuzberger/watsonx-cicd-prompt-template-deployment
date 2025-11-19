@@ -1,0 +1,30 @@
+name: Run python-scripts/python-script-for-watsonx-prompt-deployment.py
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          
+      - name: Run script
+        env:
+          WATSONX_API_KEY: ${{ secrets.WATSONX_API_KEY }}
+          WATSONX_URL: ${{ secrets.WATSONX_URL }}
+          WATSONX_SPACE_ID: ${{ secrets.WATSONX_SPACE_ID_DEV }}
+        run: python python-scripts/python-script-for-watsonx-prompt-deployment.py
