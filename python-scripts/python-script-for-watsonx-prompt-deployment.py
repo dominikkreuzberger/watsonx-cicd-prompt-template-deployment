@@ -44,7 +44,7 @@ prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prom
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "SAMPLE DEPLOYMENT PROMPT TEMPLATE",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
-        client.deployments.ConfigurationMetaNames.TASK_CREDENTIALS: {
+    client.deployments.ConfigurationMetaNames.TASK: {
         "api_key": os.getenv("WATSONX_TASK_CREDENTIAL")
     },
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct"}
