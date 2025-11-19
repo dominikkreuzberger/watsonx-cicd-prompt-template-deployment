@@ -40,7 +40,17 @@ client.set.default_project(project_id)
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
-# Try to get existing task credential
+# 1. List existing task credentials
+existing_credentials = client.task_credentials.list()
+
+# 2. Find credential by name
+existing = None
+for cred in existing_credentials:
+    if cred['metadata']['name'] == "wx task credentials":
+        existing = cred
+        break
+
+# 3. Use or create credential
 if existing:
     print("Using existing task credential")
     task_credential = existing
