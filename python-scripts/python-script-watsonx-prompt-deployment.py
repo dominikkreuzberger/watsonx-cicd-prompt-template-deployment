@@ -40,7 +40,13 @@ client.set.default_project(project_id)
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
-task_credential = client.task_credentials.store("wx task credentials")
+# Try to get existing task credential
+if existing:
+    print("Using existing task credential")
+    task_credential = existing
+else:
+    print("Creating new task credential")
+    task_credential = client.task_credentials.store("wx task credentials")
 
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
