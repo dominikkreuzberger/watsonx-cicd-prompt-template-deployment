@@ -21,10 +21,11 @@ jobs:
       - name: Install dependencies
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          
+
       - name: Run script
         env:
           WATSONX_API_KEY: ${{ secrets.WATSONX_API_KEY }}
           WATSONX_URL: ${{ secrets.WATSONX_URL }}
-          WATSONX_SPACE_ID: ${{ secrets.WATSONX_SPACE_ID_DEV }}
+          WATSONX_SPACE_ID: ${{ secrets.WATSONX_SPACE_ID }}
+          WATSONX_PROJECT_ID: ${{ secrets.WATSONX_PROJECT_ID }}
         run: python python-scripts/python-script-for-watsonx-prompt-deployment.py

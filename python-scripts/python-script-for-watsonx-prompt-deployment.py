@@ -6,6 +6,7 @@ import os
 watsonx_apikey = os.getenv("WATSONX_API_KEY")
 watsonx_url = os.getenv("WATSONX_URL")
 space_id = os.getenv("WATSONX_SPACE_ID")
+project_id = os.getenv("WATSONX_PROJECT_ID")
 project_id = space_id
 credentials = {
     "apikey": watsonx_apikey,
