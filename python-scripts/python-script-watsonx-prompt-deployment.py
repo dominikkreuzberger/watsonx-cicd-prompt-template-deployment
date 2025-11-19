@@ -41,36 +41,43 @@ client.set.default_project(project_id)
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
+from ibm_watsonx_ai.wml_client_error import WMLClientError
+
 TARGET_NAME = "wx task credentials"
 
-existing = None
 
-# 1. List all task credential IDs
-cred_ids = client.task_credentials.list()
-
-# 2. Expand each credential to read metadata.name
-for cid in cred_ids:
-    try:
-        details = client.task_credentials.get(cid)
-
-        name = details.get("metadata", {}).get("name", None)
-
-        if name == TARGET_NAME:
-            print(f"Found existing task credential: {cid}")
-            existing = details
-            break
-
-    except Exception as e:
-        # Ignore invalid IDs or unexpected returns
-        pass
-
-# 3. Use existing or create new
-if existing:
-    print("Using existing task credential")
-    task_credential = existing
-else:
-    print("Creating new task credential")
+# Try to create new task credentials
+try:
+    print("Creating new task credential...")
     task_credential = client.task_credentials.store(TARGET_NAME)
+
+except WMLClientError as e:
+    # Handle "already exists" case gracefully
+    if "Task Credentials have already been stored" in str(e):
+        print("Task credential already exists, retrieving it instead...")
+
+        # Find existing credentials
+        creds = client.task_credentials.list()
+        existing = None
+        for c in creds:
+            if isinstance(c, dict) and c.get("metadata", {}).get("name") == TARGET_NAME:
+                existing = c
+
+        if existing:
+            task_credential = existing
+        else:
+            # Fallback — list may not return credentials if running in a SPACE
+            print("Warning: credential exists but not visible in this scope.")
+            task_credential = {"name": TARGET_NAME}
+
+    else:
+        # Other errors should not be ignored
+        print("Unexpected error while creating task credential:")
+        print(e)
+        task_credential = None  # or exit if needed
+
+
+print("Using task credential:", task_credential)
 
 print("Deploy prompt template")
 meta_props = {
