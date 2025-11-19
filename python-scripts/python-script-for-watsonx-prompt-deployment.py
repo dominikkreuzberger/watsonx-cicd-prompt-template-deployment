@@ -31,17 +31,6 @@ prompt_template = PromptTemplate(name="New prompt from cicd",
                                 )
 
 
-meta_props = {
-    client.deployments.ConfigurationMetaNames.NAME: "prompt-deployment",
-    client.deployments.ConfigurationMetaNames.TASK: {
-        "credentials": {
-            "api_key": os.getenv("WATSONX_TASK_CREDENTIAL")
-        }
-    }
-}
-
-
-
 stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
 
 from ibm_watsonx_ai import APIClient
@@ -55,10 +44,9 @@ prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prom
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "SAMPLE DEPLOYMENT PROMPT TEMPLATE",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
-    client.deployments.ConfigurationMetaNames.TASK:
-        "credentials": {
-            "api_key": os.getenv("WATSONX_TASK_CREDENTIAL")
-        },
+        client.deployments.ConfigurationMetaNames.TASK_CREDENTIALS: {
+        "api_key": os.getenv("WATSONX_TASK_CREDENTIAL")
+    },
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct"}
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
