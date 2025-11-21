@@ -92,3 +92,11 @@ meta_props = {
     client.deployments.ConfigurationMetaNames.SERVING_NAME: "sample_deployment123lj12h132hliajsd"}
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
+
+
+
+print("Updating prompt template")
+updated_prompt_template = PromptTemplate(name="New name")
+prompt_mgr.update_prompt(
+    prompt_id, prompt_template
+)  # {'name': 'New name'} in metadata
