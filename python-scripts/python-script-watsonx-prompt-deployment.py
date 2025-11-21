@@ -20,6 +20,7 @@ print("Creating prompt template")
 #https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html
 #
 
+#Adjust this section according to your needs abc
 prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                  model_id="ibm/granite-3-3-8b-instruct",
                                  model_params = {GenParams.DECODING_METHOD: "sample"},
