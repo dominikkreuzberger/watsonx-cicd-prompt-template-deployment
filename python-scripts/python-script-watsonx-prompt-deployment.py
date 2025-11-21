@@ -1,3 +1,4 @@
+
 from ibm_watsonx_ai.foundation_models.prompts import PromptTemplateManager, PromptTemplate
 from ibm_watsonx_ai.foundation_models.utils.enums import ModelTypes, DecodingMethods, PromptTemplateFormats
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
@@ -15,6 +16,9 @@ credentials = {
 
 prompt_mgr = PromptTemplateManager(credentials=credentials,
                                    project_id=project_id)
+print("Creating prompt template")
+#https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html
+#
 
 prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                  model_id="ibm/granite-3-3-8b-instruct",
