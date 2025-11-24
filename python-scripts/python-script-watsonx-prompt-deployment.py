@@ -45,7 +45,7 @@ print(f"Stored prompt template ID: {prompt_id}")
 print("=== Unlock stored prompt template for editing  === ")
 #Unlock stored prompt template for editing
 prompt_mgr.unlock(prompt_id=stored_prompt_template.prompt_id)
-print("promptid", prompt_id directly unlocked for editing.")
+print(f"promptid {prompt_id} directly unlocked for editing.")
 
 #Update prompt template
 print("=== Update prompt template  === ")
