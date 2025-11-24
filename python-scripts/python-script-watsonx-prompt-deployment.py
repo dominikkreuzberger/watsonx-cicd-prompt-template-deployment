@@ -1,9 +1,10 @@
+print("=== Importing Libaries ===")
 from ibm_watsonx_ai.foundation_models.prompts import PromptTemplateManager, PromptTemplate
 from ibm_watsonx_ai.foundation_models.utils.enums import ModelTypes, DecodingMethods, PromptTemplateFormats
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
 import os
 
-print("Reading environment variables")
+print("=== Reading environment variables ===")
 watsonx_apikey = os.getenv("WATSONX_API_KEY")
 watsonx_url = os.getenv("WATSONX_URL")
 project_id = os.getenv("WATSONX_PROJECT_ID")
@@ -13,13 +14,12 @@ credentials = {
     "url": watsonx_url
 }   
 
+print("=== PreparingPromptTemplateManager ===")
 prompt_mgr = PromptTemplateManager(credentials=credentials,
                                    project_id=project_id)
-print("Creating prompt template")
-#https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html
-#
 
-#Adjust this section according to your needs abcd
+print("=== Define prompt template === ")
+#Adjust parameters as needed: https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html
 prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                  model_id="ibm/granite-3-3-8b-instruct",
                                  model_params = {GenParams.DECODING_METHOD: "sample"},
@@ -34,21 +34,25 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                             "A loan is a debt that is repaid with interest over time."]]
                                 )
 
-print("Store prompt template")
+print("=== Store Defined prompt template in Project  === ")
 stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
 
+#Initialize API client
 from ibm_watsonx_ai import APIClient
-
 client = APIClient(wml_credentials=credentials)
 client.set.default_project(project_id)
 
+#Load prompt template
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
 from ibm_watsonx_ai.wml_client_error import WMLClientError
 
-TARGET_NAME = "wx task credentials"
 
+
+print("=== User Task Credentails Configuration  === ")
+#Create or retrieve task credentials
+TARGET_NAME = "wx task credentials"
 
 # Try to create new task credentials
 try:
@@ -83,7 +87,7 @@ except WMLClientError as e:
 
 print("Using task credential:", task_credential)
 
-print("Deploy prompt template")
+print("=== Deploy Prompt template  === ")
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
