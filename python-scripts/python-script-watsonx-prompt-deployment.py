@@ -36,6 +36,15 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
 
 print("=== Store Defined prompt template in Project  === ")
 stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
+print(stored_prompt_template)
+
+print("=== Stored prompt template ID === ")
+prompt_id = stored_prompt_template.prompt_id
+print(f"Stored prompt template ID: {prompt_id}")
+
+print("=== Unlock stored prompt template for editing  === ")
+#Unlock stored prompt template for editing
+prompt_mgr.unlock_prompt(prompt_id=stored_prompt_template.prompt_id)
 
 #Initialize API client
 from ibm_watsonx_ai import APIClient
