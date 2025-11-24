@@ -48,13 +48,14 @@ prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prom
 
 print("=== List prompt templates in Project  === ")
 df_prompts = prompt_mgr.list()
+print (df_prompts)
+
+print("=== Sort by LAST modified   === ")
 df_prompts.sort_values("LAST MODIFIED", ascending=False)
-print("Available prompt templates in the project:")
 print(df_prompts)
 
-#load pronpt template as string
-print("Loaded prompt template text:")
-print(prompt_input_text)        
+
+ 
 
 
 print("=== User Task Credentails Configuration  === ")
@@ -93,9 +94,8 @@ except WMLClientError as e:
         print("Unexpected error while creating task credential:")
         print(e)
         task_credential = None  # or exit if needed
-
-
 print("Using task credential:", task_credential)
+
 
 print("=== Deploy Prompt template  === ")
 meta_props = {
