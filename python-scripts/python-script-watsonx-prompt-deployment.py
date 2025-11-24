@@ -113,21 +113,20 @@ print("=== List all deployments before Deployment  === ")
 df_deployments = client.deployments.list()
 print(df_deployments)
 
-print("=== Deploy Prompt template  === ")
+print("=== Define Deployment Meta Data  === ")
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct",
     client.deployments.ConfigurationMetaNames.SERVING_NAME: "unique_serving_name_id_123"}
 
+print("=== Create Deployment with Deployment metadata  === ")
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
-
 print("=== Deployment details === ")
 print(deployment_details)
 print("=== Deployment ID === ")
 deployment_id = deployment_details['metadata']['id']
 print(f"Deployment ID: {deployment_id}")
-
 
 
 print("=== List all deployments after Deployment  === ")
