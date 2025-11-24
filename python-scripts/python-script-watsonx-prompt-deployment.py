@@ -45,51 +45,6 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
 #    prompt_id, prompt_template
 #)  # {'name': 'New name'} in metadata
 
-print("Reading environment variables")
-
-from ibm_watsonx_ai import APIClient
-
-# Create Watsonx API client BEFORE using it
-client = APIClient(wml_credentials=credentials)
-client.set.default_project(project_id)
-
-# Try to load existing prompt
-try:
-    stored_prompt_template = client.prompt_templates.get(prompt_name)
-    print("Existing prompt found.")
-except Exception:
-    print("Prompt not found, creating a new one.")
-    stored_prompt_template = client.prompt_templates.create(
-        name=prompt_name,
-        template=template_body,
-        project_id=project_id,
-        space_id=space_id
-    )
-
-prompt_id = stored_prompt_template.prompt_id
-
-#update the prompt template
-updated_prompt_template = PromptTemplate(name="Updated Prompt Template created by CICD",
-                                 model_id="ibm/granite-3-3-8b-instruct",
-                                 model_params = {GenParams.DECODING_METHOD: "sample"},
-                                 description="My updated example",
-                                 task_ids=["generation"],
-                                 input_variables=["object"],
-                                 instruction="Answer on the following question in detail",
-                                 input_prefix="Human",
-                                 output_prefix="Assistant",
-                                 input_text="What is {object} and how does it work?",
-                                 examples=[["What is a loan and how does it work?", 
-                                            "A loan is a debt that is repaid with interest over time."]]
-                                )
-#overwrite and store the updated prompt template
-stored_prompt_template = prompt_mgr.update_prompt(
-    prompt_id, updated_prompt_template
-)  # {'name': 'New name'} in metadata
-
-
-
-from ibm_watsonx_ai.wml_client_error import WMLClientError
 
 TARGET_NAME = "wx task credentials"
 
