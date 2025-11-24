@@ -42,8 +42,8 @@ print("=== Stored prompt template ID === ")
 prompt_id = stored_prompt_template.prompt_id
 print(f"Stored prompt template ID: {prompt_id}")
 
-print("=== Unlock stored prompt template for editing  === ")
-#Unlock stored prompt template for editing
+print("=== Unlock stored prompt template for editing   === ")
+#Unlock stored prompt template for editing 
 prompt_mgr.unlock(prompt_id=stored_prompt_template.prompt_id)
 print(f"promptid {prompt_id} directly unlocked for editing.")
 
@@ -51,14 +51,14 @@ print(f"promptid {prompt_id} directly unlocked for editing.")
 print("=== Update prompt template  === ")
 updated_prompt_template = PromptTemplate(name="New name")
 prompt_mgr.update_prompt(prompt_id, updated_prompt_template)
-print("Prompt template updated.")   
+print("Prompt template updated.")
 
 #Initialize API client
 from ibm_watsonx_ai import APIClient
 client = APIClient(wml_credentials=credentials)
 client.set.default_project(project_id)
 
-#Load prompt template
+#Load prompt templates
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
