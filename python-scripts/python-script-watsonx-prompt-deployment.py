@@ -1,4 +1,3 @@
-
 from ibm_watsonx_ai.foundation_models.prompts import PromptTemplateManager, PromptTemplate
 from ibm_watsonx_ai.foundation_models.utils.enums import ModelTypes, DecodingMethods, PromptTemplateFormats
 from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
@@ -34,6 +33,17 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                  examples=[["What is a loan and how does it work?", 
                                             "A loan is a debt that is repaid with interest over time."]]
                                 )
+
+print("Store prompt template")
+stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
+
+from ibm_watsonx_ai import APIClient
+
+client = APIClient(wml_credentials=credentials)
+client.set.default_project(project_id)
+
+prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
+                                           astype=PromptTemplateFormats.STRING)
 
 from ibm_watsonx_ai.wml_client_error import WMLClientError
 
@@ -82,3 +92,11 @@ meta_props = {
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
 
+#get prompt id
+#prompt_id = stored_prompt_template.prompt_id
+
+#print("Updating prompt template")
+#updated_prompt_template = PromptTemplate(name="New name")
+#prompt_mgr.update_prompt(
+#    prompt_id, prompt_template
+#)  # {'name': 'New name'} in metadata
