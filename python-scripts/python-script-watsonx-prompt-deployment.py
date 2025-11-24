@@ -47,11 +47,11 @@ print("=== Unlock stored prompt template for editing   === ")
 prompt_mgr.unlock(prompt_id=stored_prompt_template.prompt_id)
 print(f"promptid {prompt_id} directly unlocked for editing.")
 
-#Update prompt template
-print("=== Update prompt template  === ")
-updated_prompt_template = PromptTemplate(name="New name")
-prompt_mgr.update_prompt(prompt_id, updated_prompt_template)
-print("Prompt template updated.")
+#Update existing prompt template with new name
+# print("=== Update prompt template  === ")
+# updated_prompt_template = PromptTemplate(name="New name")
+# prompt_mgr.update_prompt(prompt_id, updated_prompt_template)
+# print("Prompt template name updated.")
 
 #Initialize API client
 from ibm_watsonx_ai import APIClient
@@ -69,8 +69,6 @@ print (df_prompts)
 print("=== Sort by LAST modified   === ")
 df_prompts.sort_values("LAST MODIFIED", ascending=False)
 print(df_prompts)
-
-
 
 print("=== User Task Credentails Configuration  === ")
 #Task credentails: https://www.ibm.com/docs/en/watsonx/saas?topic=projects-managing-task-credentials#accessing-task-credentials
@@ -111,6 +109,10 @@ except WMLClientError as e:
 print("Using task credential:", task_credential)
 
 
+print("=== List all deployments before Deployment  === ")
+df_deployments = client.deployments.list()
+print(df_deployments)
+
 print("=== Deploy Prompt template  === ")
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
@@ -120,13 +122,16 @@ meta_props = {
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
 
+print("=== Deployment details === ")
+print(deployment_details)
+print("=== Deployment ID === ")
+deployment_id = deployment_details['metadata']['id']
+print(f"Deployment ID: {deployment_id}")
 
 
-#get prompt id
-#prompt_id = stored_prompt_template.prompt_id
 
-#print("Updating prompt template")
-#updated_prompt_template = PromptTemplate(name="New name")
-#prompt_mgr.update_prompt(
-#    prompt_id, prompt_template
-#)  # {'name': 'New name'} in metadata
+print("=== List all deployments after Deployment  === ")
+df_deployments = client.deployments.list()
+print(df_deployments)
+
+print("=== Done === ")
