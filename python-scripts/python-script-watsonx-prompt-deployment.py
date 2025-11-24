@@ -20,7 +20,7 @@ print("Creating prompt template")
 #https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html
 #
 
-#Adjust this section according to your needs abc
+#Adjust this section according to your needs abcd
 prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                  model_id="ibm/granite-3-3-8b-instruct",
                                  model_params = {GenParams.DECODING_METHOD: "sample"},
@@ -89,7 +89,7 @@ meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct",
-    client.deployments.ConfigurationMetaNames.SERVING_NAME: "sample_deployment123lj12h132hliajsd"}
+    client.deployments.ConfigurationMetaNames.SERVING_NAME: "unique_serving_nameID_123",}
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
 
