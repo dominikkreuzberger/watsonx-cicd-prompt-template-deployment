@@ -45,7 +45,13 @@ print(f"Stored prompt template ID: {prompt_id}")
 print("=== Unlock stored prompt template for editing  === ")
 #Unlock stored prompt template for editing
 prompt_mgr.unlock(prompt_id=stored_prompt_template.prompt_id)
-print("promptid", prompt_id unlocked for editing.")
+print("promptid", prompt_id directly unlocked for editing.")
+
+#Update prompt template
+print("=== Update prompt template  === ")
+updated_prompt_template = PromptTemplate(name="New name")
+prompt_mgr.update_prompt(prompt_id, updated_prompt_template)
+print("Prompt template updated.")   
 
 #Initialize API client
 from ibm_watsonx_ai import APIClient
@@ -64,8 +70,6 @@ print("=== Sort by LAST modified   === ")
 df_prompts.sort_values("LAST MODIFIED", ascending=False)
 print(df_prompts)
 
-
- 
 
 
 print("=== User Task Credentails Configuration  === ")
@@ -115,6 +119,8 @@ meta_props = {
     client.deployments.ConfigurationMetaNames.SERVING_NAME: "unique_serving_name_id_123"}
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
+
+
 
 #get prompt id
 #prompt_id = stored_prompt_template.prompt_id
