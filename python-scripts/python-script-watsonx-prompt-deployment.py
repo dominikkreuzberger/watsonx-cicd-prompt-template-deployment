@@ -89,7 +89,7 @@ meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct",
-    client.deployments.ConfigurationMetaNames.SERVING_NAME: "unique_serving_nameID_123",}
+    client.deployments.ConfigurationMetaNames.SERVING_NAME: "unique_serving_name_id_123",}
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
 
