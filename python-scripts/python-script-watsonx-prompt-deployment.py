@@ -46,11 +46,21 @@ client.set.default_project(project_id)
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
-from ibm_watsonx_ai.wml_client_error import WMLClientError
+#list prompt template available in the project
+prompts_in_project = prompt_mgr.list_prompts()
+print("Prompts in project:", prompts_in_project)
+
+
+#load pronpt template as string
+print("Loaded prompt template text:")
+print(prompt_input_text)        
 
 
 
 print("=== User Task Credentails Configuration  === ")
+#Task credentails: https://www.ibm.com/docs/en/watsonx/saas?topic=projects-managing-task-credentials#accessing-task-credentials
+from ibm_watsonx_ai.wml_client_error import WMLClientError
+
 #Create or retrieve task credentials
 TARGET_NAME = "wx task credentials"
 
