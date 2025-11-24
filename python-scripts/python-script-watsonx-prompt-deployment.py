@@ -46,70 +46,58 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
 #)  # {'name': 'New name'} in metadata
 
 
-#how to update this stored prompt template
+print("Reading environment variables")
 
-if stored_prompt_template:
-    prompt_id = stored_prompt_template.prompt_id
-else:
-    print("Prompt not found, creating a new one")
+# Try to load existing prompt
+try:
+    stored_prompt_template = client.prompt_templates.get(prompt_name)
+    print("Existing prompt found.")
+except Exception:
+    print("Prompt not found, creating a new one.")
     stored_prompt_template = client.prompt_templates.create(
         name=prompt_name,
         template=template_body,
         project_id=project_id,
         space_id=space_id
     )
-    prompt_id = stored_prompt_template.prompt_id
 
-
-print("Reading environment variables")
-
-stored_prompt_template = None
-
-try:
-    stored_prompt_template = client.prompt_templates.get(prompt_name)
-except Exception as e:
-    print("Prompt not found, creating a new one")
-
-if stored_prompt_template:
-    prompt_id = stored_prompt_template.prompt_id
-else:
-    print("Creating prompt template")
-    # your create code
-
-
-# ...existing code...
-# Update the stored prompt template
+# Always safe because stored_prompt_template is guaranteed not None now
 prompt_id = stored_prompt_template.prompt_id
 
+
+# -----------------------
+# Update the prompt
+# -----------------------
 updated_prompt = PromptTemplate(
     name="Updated Prompt Template name",
     description="Updated description",
     instruction="New instruction text",
     input_text="What is {object}? Give a concise answer.",
-    examples=[["What is a loan and how does it work?",
-               "A loan is a debt that is repaid with interest over time. (updated)"]]
+    examples=[[
+        "What is a loan and how does it work?",
+        "A loan is a debt that is repaid with interest over time. (updated)"
+    ]]
 )
 
 prompt_mgr.update_prompt(prompt_id, updated_prompt)
 
-# Verify the update
-current = prompt_mgr.load_prompt(prompt_id=prompt_id, astype=PromptTemplateFormats.STRING)
+# Verify
+current = prompt_mgr.load_prompt(
+    prompt_id=prompt_id,
+    astype=PromptTemplateFormats.STRING
+)
 print("Updated prompt content:", current)
-# ...existing code...
 
-
-
-print("Store prompt template")
+# -----------------------
+# Store prompt
+# -----------------------
+print("Storing prompt template")
 stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
 
-from ibm_watsonx_ai import APIClient
-
-client = APIClient(wml_credentials=credentials)
-client.set.default_project(project_id)
-
-prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
-                                           astype=PromptTemplateFormats.STRING)
-
+prompt_input_text = prompt_mgr.load_prompt(
+    prompt_id=stored_prompt_template.prompt_id,
+    astype=PromptTemplateFormats.STRING
+)
 from ibm_watsonx_ai.wml_client_error import WMLClientError
 
 TARGET_NAME = "wx task credentials"
