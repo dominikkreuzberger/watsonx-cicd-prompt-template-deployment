@@ -35,16 +35,6 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                             "A loan is a debt that is repaid with interest over time."]]
                                 )
 
-
-#get prompt id
-#prompt_id = stored_prompt_template.prompt_id
-
-#print("Updating prompt template")
-#updated_prompt_template = PromptTemplate(name="New name")
-#prompt_mgr.update_prompt(
-#    prompt_id, prompt_template
-#)  # {'name': 'New name'} in metadata
-
 from ibm_watsonx_ai.wml_client_error import WMLClientError
 
 TARGET_NAME = "wx task credentials"
