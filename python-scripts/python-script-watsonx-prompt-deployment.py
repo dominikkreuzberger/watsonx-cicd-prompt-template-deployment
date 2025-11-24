@@ -48,6 +48,18 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
 
 #how to update this stored prompt template
 
+if stored_prompt_template:
+    prompt_id = stored_prompt_template.prompt_id
+else:
+    print("Prompt not found, creating a new one")
+    stored_prompt_template = client.prompt_templates.create(
+        name=prompt_name,
+        template=template_body,
+        project_id=project_id,
+        space_id=space_id
+    )
+    prompt_id = stored_prompt_template.prompt_id
+
 
 print("Reading environment variables")
 
