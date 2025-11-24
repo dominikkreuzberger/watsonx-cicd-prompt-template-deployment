@@ -35,17 +35,6 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                             "A loan is a debt that is repaid with interest over time."]]
                                 )
 
-
-#get prompt id
-prompt_id = stored_prompt_template.prompt_id
-
-print("Updating prompt template")
-updated_prompt_template = PromptTemplate(name="New name")
-prompt_mgr.update_prompt(
-    prompt_id, prompt_template
-)  # {'name': 'New name'} in metadata
-
-
 print("Store prompt template")
 stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
 
@@ -93,8 +82,6 @@ except WMLClientError as e:
         task_credential = None  # or exit if needed
 
 
-
-
 print("Using task credential:", task_credential)
 
 print("Deploy prompt template")
@@ -102,7 +89,15 @@ meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct",
-    client.deployments.ConfigurationMetaNames.SERVING_NAME: "unique_serving_name_id_123",}
+    client.deployments.ConfigurationMetaNames.SERVING_NAME: "unique_serving_name_id_123"}
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
 
+#get prompt id
+#prompt_id = stored_prompt_template.prompt_id
+
+#print("Updating prompt template")
+#updated_prompt_template = PromptTemplate(name="New name")
+#prompt_mgr.update_prompt(
+#    prompt_id, prompt_template
+#)  # {'name': 'New name'} in metadata
