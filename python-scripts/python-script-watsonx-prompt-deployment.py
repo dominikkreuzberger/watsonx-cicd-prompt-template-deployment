@@ -45,6 +45,7 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
 #    prompt_id, prompt_template
 #)  # {'name': 'New name'} in metadata
 
+from ibm_watsonx_ai.wml_client_error import WMLClientError
 
 TARGET_NAME = "wx task credentials"
 
