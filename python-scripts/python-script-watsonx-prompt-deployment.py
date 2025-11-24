@@ -45,8 +45,13 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
 #    prompt_id, prompt_template
 #)  # {'name': 'New name'} in metadata
 
-
 print("Reading environment variables")
+
+from ibm_watsonx_ai import APIClient
+
+# Create Watsonx API client BEFORE using it
+client = APIClient(wml_credentials=credentials)
+client.set.default_project(project_id)
 
 # Try to load existing prompt
 try:
@@ -61,48 +66,28 @@ except Exception:
         space_id=space_id
     )
 
-# Always safe because stored_prompt_template is guaranteed not None now
 prompt_id = stored_prompt_template.prompt_id
 
+#update the prompt template
+updated_prompt_template = PromptTemplate(name="Updated Prompt Template created by CICD",
+                                 model_id="ibm/granite-3-3-8b-instruct",
+                                 model_params = {GenParams.DECODING_METHOD: "sample"},
+                                 description="My updated example",
+                                 task_ids=["generation"],
+                                 input_variables=["object"],
+                                 instruction="Answer on the following question in detail",
+                                 input_prefix="Human",
+                                 output_prefix="Assistant",
+                                 input_text="What is {object} and how does it work?",
+                                 examples=[["What is a loan and how does it work?", 
+                                            "A loan is a debt that is repaid with interest over time."]]
+                                )
+#overwrite and store the updated prompt template
+stored_prompt_template = prompt_mgr.update_prompt(
+    prompt_id, updated_prompt_template
+)  # {'name': 'New name'} in metadata
 
-# -----------------------
-# Update the prompt
-# -----------------------
-updated_prompt = PromptTemplate(
-    name="Updated Prompt Template name",
-    description="Updated description",
-    instruction="New instruction text",
-    input_text="What is {object}? Give a concise answer.",
-    examples=[[
-        "What is a loan and how does it work?",
-        "A loan is a debt that is repaid with interest over time. (updated)"
-    ]]
-)
 
-prompt_mgr.update_prompt(prompt_id, updated_prompt)
-
-# Verify
-current = prompt_mgr.load_prompt(
-    prompt_id=prompt_id,
-    astype=PromptTemplateFormats.STRING
-)
-print("Updated prompt content:", current)
-
-# -----------------------
-# Store prompt
-# -----------------------
-print("Storing prompt template")
-stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
-
-prompt_input_text = prompt_mgr.load_prompt(
-    prompt_id=stored_prompt_template.prompt_id,
-    astype=PromptTemplateFormats.STRING
-)
-
-from ibm_watsonx_ai import APIClient
-
-client = APIClient(wml_credentials=credentials)
-client.set.default_project(project_id)
 
 from ibm_watsonx_ai.wml_client_error import WMLClientError
 
