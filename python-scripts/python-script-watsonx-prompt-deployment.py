@@ -35,6 +35,41 @@ prompt_template = PromptTemplate(name="New Prompt Template created by CICD",
                                             "A loan is a debt that is repaid with interest over time."]]
                                 )
 
+
+#get prompt id
+#prompt_id = stored_prompt_template.prompt_id
+
+#print("Updating prompt template")
+#updated_prompt_template = PromptTemplate(name="New name")
+#prompt_mgr.update_prompt(
+#    prompt_id, prompt_template
+#)  # {'name': 'New name'} in metadata
+
+
+#how to update this stored prompt template
+
+# ...existing code...
+# Update the stored prompt template
+prompt_id = stored_prompt_template.prompt_id
+
+updated_prompt = PromptTemplate(
+    name="Updated Prompt Template name",
+    description="Updated description",
+    instruction="New instruction text",
+    input_text="What is {object}? Give a concise answer.",
+    examples=[["What is a loan and how does it work?",
+               "A loan is a debt that is repaid with interest over time. (updated)"]]
+)
+
+prompt_mgr.update_prompt(prompt_id, updated_prompt)
+
+# Verify the update
+current = prompt_mgr.load_prompt(prompt_id=prompt_id, astype=PromptTemplateFormats.STRING)
+print("Updated prompt content:", current)
+# ...existing code...
+
+
+
 print("Store prompt template")
 stored_prompt_template = prompt_mgr.store_prompt(prompt_template=prompt_template)
 
@@ -93,11 +128,3 @@ meta_props = {
 
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
 
-#get prompt id
-#prompt_id = stored_prompt_template.prompt_id
-
-#print("Updating prompt template")
-#updated_prompt_template = PromptTemplate(name="New name")
-#prompt_mgr.update_prompt(
-#    prompt_id, prompt_template
-#)  # {'name': 'New name'} in metadata
