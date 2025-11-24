@@ -45,6 +45,7 @@ print(f"Stored prompt template ID: {prompt_id}")
 print("=== Unlock stored prompt template for editing  === ")
 #Unlock stored prompt template for editing
 prompt_mgr.unlock(prompt_id=stored_prompt_template.prompt_id)
+print("promptid", prompt_id unlocked for editing.")
 
 #Initialize API client
 from ibm_watsonx_ai import APIClient
