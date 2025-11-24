@@ -46,15 +46,15 @@ client.set.default_project(project_id)
 prompt_input_text = prompt_mgr.load_prompt(prompt_id=stored_prompt_template.prompt_id, 
                                            astype=PromptTemplateFormats.STRING)
 
-#list prompt template available in the project
-prompts_in_project = prompt_mgr.list_prompts()
-print("Prompts in project:", prompts_in_project)
-
+print("=== List prompt templates in Project  === ")
+df_prompts = prompt_mgr.list()
+df_prompts.sort_values("LAST MODIFIED", ascending=False)
+print("Available prompt templates in the project:")
+print(df_prompts)
 
 #load pronpt template as string
 print("Loaded prompt template text:")
 print(prompt_input_text)        
-
 
 
 print("=== User Task Credentails Configuration  === ")
