@@ -61,5 +61,5 @@ This Python script automates the creation, management, and deployment of IBM Wat
 12. The script is designed for CI/CD pipelines, allowing automated prompt template deployment and management within IBM Watsonx AI.
 
 
-## ⚙️ Overview Workflow 
+## ⚙️ Workflow Overview
 ![Workflow-Diagram](img/workflow.png)
