@@ -112,14 +112,14 @@ print(df_deployments)
 
 print("=== Define Deployment Meta Data  === ")
 
-#define SERVING_VARIABLE for meta_props with a random number at the end to avoid name conflicts
-SERVING_VARIABLE = "prompt_serving_" + str(os.urandom(4).hex())
+# define serving_variable for meta_props with a random suffix to avoid name conflicts
+serving_name_variable = "prompt_serving_" + os.urandom(4).hex()
 
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct",
-    client.deployments.ConfigurationMetaNames.SERVING_NAME: "SERVING_VARIABLE",
+    client.deployments.ConfigurationMetaNames.SERVING_NAME: serving_name_variable,
 }
 
 print("=== Create Deployment with Deployment metadata  === ")
