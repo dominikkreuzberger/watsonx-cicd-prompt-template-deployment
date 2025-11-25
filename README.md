@@ -3,28 +3,28 @@
 This workflow automatically runs the Python script python-scripts/python-script-watsonx-prompt-deployment.py whenever changes are pushed to the main branch or when manually triggered.
 It is designed to deploy Watsonx prompt templates using credentials securely stored in GitHub Secrets.
 
-# Make sure you have stored in your GitHub repository secrets the following variables:
+### Make sure you have stored in your GitHub repository secrets the following variables:
 *WATSONX_API_KEY
-# WATSONX_URL
-# WATSONX_PROJECT_ID
-# WATSONX_TASK_CREDENTIAL
+*WATSONX_URL
+*WATSONX_PROJECT_ID
+*WATSONX_TASK_CREDENTIAL
 
 ## 📌 What the GitHub Actions / CICD Workflow does
 
-# Triggers on:
+### Triggers on:
 Pushes to main
 Manual execution via Workflow Dispatch
 
-# Sets up the environment:
+### Sets up the environment:
 Checks out the repository
 Installs Python 3.11
 Installs dependencies from requirements.txt (if present)
 
-# Runs the deployment script:
+### Runs the deployment script:
 Executes python-script-watsonx-prompt-deployment.py
 
-# Python Script content leveraging the Watsonx AI SDK
-# Link to the Documentation: https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html
+### Python Script content leveraging the Watsonx AI SDK
+### Link to the Documentation: https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html
 
 1. Library Import
 2. Reads environment variables for API credentials, project ID, and task credentials.
