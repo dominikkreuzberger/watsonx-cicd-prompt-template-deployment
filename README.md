@@ -1,6 +1,7 @@
 ## 🚀 CI/CD with GitHub Actions Workflows: Deploying automatically Watsonx Prompt Templates
 
-This workflow automatically runs the Python script python-scripts/python-script-watsonx-prompt-deployment.py whenever changes are pushed to the main branch or when manually triggered.
+This workflow automatically runs the Python script python-scripts/python-script-watsonx-prompt-deployment.py 
+whenever changes are pushed to the main branch or when manually triggered.
 It is designed to deploy Watsonx prompt templates using credentials securely stored in GitHub Secrets.
 
 ### Prerequisites

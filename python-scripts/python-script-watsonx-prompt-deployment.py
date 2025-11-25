@@ -133,7 +133,7 @@ deployment_id = deployment_details['metadata']['id']
 print(f"Deployment ID: {deployment_id}")
 
 
-print("=== List all deployments after Deployment  === ")
+print("=== List all Deployments after Deployment  === ")
 df_deployments = client.deployments.list()
 print(df_deployments)
 
