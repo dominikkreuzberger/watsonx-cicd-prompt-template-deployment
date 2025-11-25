@@ -110,17 +110,19 @@ print("=== List all deployments before Deployment  === ")
 df_deployments = client.deployments.list()
 print(df_deployments)
 
-print("=== Define Deployment Meta Data  === ")
+print("=== Define and Print Deployment Meta Data  === ")
 
 # define serving_variable for meta_props with a random suffix to avoid name conflicts
-serving_name_variable = "prompt_serving_" + os.urandom(4).hex()
+prompt_serving_name_variable = "prompt_serving_name_" + os.urandom(4).hex()
+print(f"Using serving name: {prompt_serving_name_variable}")
 
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct",
-    client.deployments.ConfigurationMetaNames.SERVING_NAME: serving_name_variable,
+    client.deployments.ConfigurationMetaNames.SERVING_NAME: prompt_serving_name_variable,
 }
+print(meta_props)
 
 print("=== Create Deployment with Deployment metadata  === ")
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
