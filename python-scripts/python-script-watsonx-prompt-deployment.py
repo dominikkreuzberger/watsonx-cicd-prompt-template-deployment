@@ -111,7 +111,7 @@ df_deployments = client.deployments.list()
 print(df_deployments)
 
 print("=== Define Deployment Meta Data  === ")
-S
+
 #define SERVING_VARIABLE for meta_props with a random number at the end to avoid name conflicts
 SERVING_VARIABLE = "prompt_serving_" + str(os.urandom(4).hex())
 
