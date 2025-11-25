@@ -24,7 +24,7 @@ Installs dependencies from requirements.txt (if present)
 Executes python-script-watsonx-prompt-deployment.py
 
 ### Python Script content leveraging the Watsonx AI SDK
-### Link to the Documentation: https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html
+( Link to the Documentation: https://ibm.github.io/watsonx-ai-python-sdk/v1.4.7/prompt_template_manager.html )
 
 1. Library Import
 2. Reads environment variables for API credentials, project ID, and task credentials.
