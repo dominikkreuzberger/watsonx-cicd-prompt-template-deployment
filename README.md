@@ -3,6 +3,12 @@
 This workflow automatically runs the Python script python-scripts/python-script-watsonx-prompt-deployment.py whenever changes are pushed to the main branch or when manually triggered.
 It is designed to deploy Watsonx prompt templates using credentials securely stored in GitHub Secrets.
 
+Make sure you have stored in your GitHub repository secrets the following variables:
+WATSONX_API_KEY
+WATSONX_URL
+WATSONX_PROJECT_ID
+WATSONX_TASK_CREDENTIAL
+
 📌 What the Workflow Does
 
 Triggers on:
