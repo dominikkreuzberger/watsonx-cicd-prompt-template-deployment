@@ -111,20 +111,16 @@ df_deployments = client.deployments.list()
 print(df_deployments)
 
 print("=== Define Deployment Meta Data  === ")
+S
+#define SERVING_VARIABLE for meta_props with a random number at the end to avoid name conflicts
+SERVING_VARIABLE = "prompt_serving_" + str(os.urandom(4).hex())
+
 meta_props = {
     client.deployments.ConfigurationMetaNames.NAME: "Prompt Template deployed by CICD",
     client.deployments.ConfigurationMetaNames.ONLINE: {},
     client.deployments.ConfigurationMetaNames.BASE_MODEL_ID: "ibm/granite-3-8b-instruct",
-    client.deployments.ConfigurationMetaNames.SERVING_NAME: "unique_serving_name_id_123456"
+    client.deployments.ConfigurationMetaNames.SERVING_NAME: "SERVING_VARIABLE",
 }
-print("=== List existing deployments to get latest deployment ids  === ")
-#list only the latest deployment ids
-existing_deployments = client.deployments.list().sort_values("LAST MODIFIED", ascending=False)
-latest_deployment_id = existing_deployments['DEPLOYMENT ID'].tolist() if not
-existing_deployments.empty else []
-print("Latest deployment IDs:", latest_deployment_id)
-
-
 
 print("=== Create Deployment with Deployment metadata  === ")
 deployment_details = client.deployments.create(artifact_id=stored_prompt_template.prompt_id, meta_props=meta_props)
